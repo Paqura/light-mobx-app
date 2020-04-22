@@ -1,12 +1,13 @@
 import { createContext, useContext } from "react"
-import { CounterStore } from "./counterStore";
+import { TableStore } from "./tableStore";
 
 class RootStore {
-  counterStore = new CounterStore()
+  tableStore = new TableStore();
 }
 
 const rootStore = new RootStore();
-const counterStoreContext = createContext(rootStore.counterStore);
-const useCounterStore = () => useContext(counterStoreContext);
 
-export { useCounterStore }
+const tableStoreContext = createContext(rootStore.tableStore);
+const useTableStore = () => useContext(tableStoreContext);
+
+export { useTableStore }

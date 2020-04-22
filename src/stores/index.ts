@@ -1,3 +1,3 @@
 export {
-  useCounterStore,
+  useTableStore,
 } from './rootStore'
