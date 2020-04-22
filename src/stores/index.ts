@@ -1,0 +1,3 @@
+export {
+  useCounterStore,
+} from './rootStore'
