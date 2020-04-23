@@ -1,4 +1,4 @@
-import { action, observable, reaction } from 'mobx';
+import { action, observable, reaction, computed } from 'mobx';
 
 export const data = [
   { name: 'slava', age: 28 },
@@ -31,6 +31,10 @@ class TableStore {
       () => this.dir,
       dir => this.updateData(dir)
     )
+  }
+
+  @computed get position() {
+    return `Position: ${this.dir}`;
   }
 
   @action updateData = (dir: SortDir) => {
