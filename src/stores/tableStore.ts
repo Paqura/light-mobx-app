@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, reaction } from 'mobx';
 
 export const data = [
   { name: 'slava', age: 28 },
@@ -26,6 +26,25 @@ class TableStore {
   @observable dir: SortDir = 'default';
   @observable data: Data = data;
 
+  constructor() {
+    reaction(
+      () => this.dir,
+      dir => this.updateData(dir)
+    )
+  }
+
+  @action updateData = (dir: SortDir) => {
+    if (dir === 'default') {
+      return this.data = this.cachedData;
+    }
+
+    this.data = this.data.sort(
+      (a, b) => dir === 'down'
+        ? a.age - b.age
+        : b.age - a.age
+    )
+  }
+
   @action setSort = () => {
     switch(this.dir) {
       case 'up':
@@ -37,20 +56,8 @@ class TableStore {
       case 'default':
         this.dir = 'down'; break;
 
-      default: this.dir = 'default';
+      default: throw new Error('Unexpected dir');
     }
-
-    if (this.dir === 'default') {
-      return this.data = this.cachedData;
-    }
-
-    this.data = this.data.sort((a, b) => {
-      if (this.dir === 'down') {
-        return a.age - b.age;
-      }
-
-      return b.age - a.age;
-    })
   }
 }
 
