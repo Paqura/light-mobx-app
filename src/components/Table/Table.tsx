@@ -2,11 +2,10 @@ import React from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
 
-
 const Table = () => {
   const { data, setSort, dir } = useTableStore();
 
-  const sortIcon = dir === 'up' ? '^' : dir === 'down' ? '_' : '-';
+  const sortIcon = dir === 'up' ? '^' : dir === 'down' ? '_' : '*';
 
   return (
     <table className="blueTable">
@@ -15,7 +14,8 @@ const Table = () => {
           <td>#</td>
           <td>Name</td>
           <td onClick={setSort}>
-            Age {sortIcon}
+            Age
+            <span style={{ position: 'absolute' }}>{sortIcon}</span>
           </td>
         </tr>
       </thead>
