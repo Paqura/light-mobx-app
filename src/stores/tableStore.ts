@@ -1,30 +1,17 @@
-import { action, observable, reaction, computed } from 'mobx';
-
-export const data = [
-  { name: 'slava', age: 28 },
-  { name: 'kostya', age: 21 },
-  { name: 'egor', age: 12 },
-  { name: 'oleg', age: 55 },
-  { name: 'borya', age: 75 },
-  { name: 'igor', age: 43 },
-  { name: 'semen', age: 36 },
-  { name: 'valera', age: 32 },
-  { name: 'gosha', age: 12 },
-  { name: 'sasha', age: 79 },
-]
+import { action, observable, reaction } from 'mobx';
 
 type Data = Array<{
-  name: string,
-  age: number
+  cases: number;
+  country: string;
 }>
 
 export type SortDir = 'default' | 'up' | 'down';
 
 class TableStore {
-  private cachedData = data;
+  private cachedData = [];
 
   @observable dir: SortDir = 'default';
-  @observable data: Data = data;
+  @observable data: Data = [];
 
   constructor() {
     reaction(
@@ -33,8 +20,9 @@ class TableStore {
     )
   }
 
-  @computed get position() {
-    return `Position: ${this.dir}`;
+  @action setData = (data: any) => {
+    this.data = data;
+    this.cachedData = data;
   }
 
   @action updateData = (dir: SortDir) => {
@@ -44,8 +32,8 @@ class TableStore {
 
     this.data = this.data.sort(
       (a, b) => dir === 'down'
-        ? a.age - b.age
-        : b.age - a.age
+        ? a.cases - b.cases
+        : b.cases - a.cases
     )
   }
 
