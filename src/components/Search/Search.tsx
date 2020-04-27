@@ -1,21 +1,45 @@
-import React, { SyntheticEvent } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, { SyntheticEvent, useRef } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { useTableStore } from '../../stores';
+import { coronaService } from '../../services/Corona.service';
+import { useNotificationStore } from '../../stores/rootStore';
 
 const Search = () => {
-  const onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { setData } = useTableStore();
+  const { setError, dropError } = useNotificationStore();
+
+  const onSubmit = async (evt: SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    const value = inputRef.current!.value;
+
+    if (!value) {
+      return;
+    }
+
+    try {
+      const data = await coronaService.getCountry(value);
+      setData([data]);
+      dropError();
+    } catch (error) {
+      setError(error.message);
+    }
   }
 
   return (
     <Form onSubmit={onSubmit}>
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Search country</Form.Label>
-        <Form.Control type="text" placeholder="Country" />
-      </Form.Group>
-
-      <Button variant="primary" type="submit">
-        Search
-      </Button>
+      <Row>
+        <Col>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Control type="text" placeholder="Country" ref={inputRef} />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Button variant="primary" type="submit">
+            Search
+          </Button>
+        </Col>
+      </Row>
     </Form>
   )
 }

@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
 import { Table as RTable } from 'react-bootstrap';
+import { coronaService } from '../../services/Corona.service';
 
-const request = async () => {
-  return await fetch('https://corona.lmao.ninja/v2/countries').then(r => r.json())
-};
+const formatCase = new Intl.NumberFormat().format;
 
 const Table = () => {
   const { data, setSort, dir, setData } = useTableStore();
@@ -14,7 +13,7 @@ const Table = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await request()
+      const data = await coronaService.getCountries();
       setData(data)
     }
 
@@ -34,11 +33,11 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {data.map((user, idx) => (
-          <tr key={user.country}>
+        {data?.length > 0 && data.map((item, idx) => (
+          <tr key={item.country}>
             <td>{idx}</td>
-            <td>{user.country}</td>
-            <td>{user.cases}</td>
+            <td>{item.country}</td>
+            <td>{formatCase(item.cases)}</td>
           </tr>
         ))}
       </tbody>
