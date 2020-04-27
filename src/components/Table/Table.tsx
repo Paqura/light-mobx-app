@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
+import { Table as RTable } from 'react-bootstrap';
 
 const request = async () => {
   return await fetch('https://corona.lmao.ninja/v2/countries').then(r => r.json())
@@ -21,7 +22,7 @@ const Table = () => {
   }, [setData]);
 
   return (
-    <table className="blueTable">
+    <RTable striped bordered hover>
       <thead>
         <tr>
           <td>№</td>
@@ -41,7 +42,7 @@ const Table = () => {
           </tr>
         ))}
       </tbody>
-    </table>
+    </RTable>
   )
 }
 
