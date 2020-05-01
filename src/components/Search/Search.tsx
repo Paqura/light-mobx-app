@@ -9,14 +9,7 @@ const Search = () => {
   const { setData } = useTableStore();
   const { setError, dropError } = useNotificationStore();
 
-  const onSubmit = async (evt: SyntheticEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    const value = inputRef.current!.value;
-
-    if (!value) {
-      return;
-    }
-
+  const getCavidData = async (value: string) => {
     try {
       const data = await coronaService.getCountry(value);
       setData([data]);
@@ -24,6 +17,20 @@ const Search = () => {
     } catch (error) {
       setError(error.message);
     }
+  };
+
+  const onSubmit = async (evt: SyntheticEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const value = inputRef.current!.value;
+
+    if (!value) {
+      const data = await coronaService.getCountries();
+      setData(data);
+      dropError();
+      return;
+    }
+
+    getCavidData(value);
   }
 
   return (
