@@ -3,6 +3,9 @@ import { action, observable, reaction } from 'mobx';
 type Data = Array<{
   cases: number;
   country: string;
+  countryInfo: {
+    flag: string;
+  }
 }>
 
 export type SortDir = 'default' | 'up' | 'down';

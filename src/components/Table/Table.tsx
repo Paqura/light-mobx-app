@@ -30,6 +30,7 @@ const Table = () => {
             Cases
             <span style={{ position: 'absolute' }}>{sortIcon}</span>
           </td>
+          <td>Flag</td>
         </tr>
       </thead>
       <tbody>
@@ -38,6 +39,11 @@ const Table = () => {
             <td>{idx}</td>
             <td>{item.country}</td>
             <td>{formatCase(item.cases)}</td>
+            <td>
+              <span>
+                <img src={item.countryInfo.flag} alt={`Flag of ${item.country}`} width="32px" />
+              </span>
+            </td>
           </tr>
         ))}
       </tbody>
