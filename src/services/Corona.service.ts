@@ -1,7 +1,19 @@
+type TimeLineItem = { [key: string]: number }
+
+interface TimeLine {
+  cases: TimeLineItem;
+  deaths: TimeLineItem;
+};
+interface ChartDataResponse {
+  country: string;
+  timeline: TimeLine;
+}
+
 class FetchHandler {
-  static check = (response: Response) => {
+  static check = async (response: Response) => {
     if (response.status === 404) {
-      throw new Error('Country not found');
+      const error = await response.json();
+      throw new Error(error.message);
     }
     return response.json();
   }
@@ -16,6 +28,10 @@ class CoronaService {
 
   getCountry = async (country: string) => {
     return await fetch(`${CoronaService.baseUrl}/v2/countries/${country}`).then(FetchHandler.check)
+  }
+
+  getChartData = async (country: string, limit: number = 30): Promise<ChartDataResponse> => {
+    return await fetch(`${CoronaService.baseUrl}/v2/historical/${country}?lastdays=${limit}`).then(FetchHandler.check)
   }
 }
 
