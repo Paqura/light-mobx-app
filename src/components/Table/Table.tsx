@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
-import { Table as RTable, Modal } from 'react-bootstrap';
+import { Table as RTable, Modal, Spinner } from 'react-bootstrap';
 import { coronaService } from '../../services/Corona.service';
 import { Chart } from '../Chart';
 
 const formatCase = new Intl.NumberFormat().format;
 
 const Table = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
   const [chartData, setChartData] = useState<number[]>([]);
   const { data, setSort, dir, setData } = useTableStore();
@@ -16,8 +17,12 @@ const Table = () => {
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
+
       const data = await coronaService.getCountries();
       setData(data)
+
+      setIsLoading(false);
     }
 
     getData();
@@ -41,9 +46,13 @@ const Table = () => {
     setIsModalShown(false);
   }
 
+  if (isLoading) {
+    return <Spinner animation="border" />
+  }
+
   return (
     <>
-      <Modal onHide={closeModal} show={isModalShown} size="xl">
+      <Modal onHide={closeModal} show={isModalShown} size="xl" animation={false}>
         <Chart data={chartData} />
       </Modal>
       <RTable striped bordered hover>
@@ -62,7 +71,9 @@ const Table = () => {
           {data?.length > 0 && data.map((item, idx) => (
             <tr key={item.country}>
               <td>{idx}</td>
-              <td onClick={onChartOpen(item.country)}>{item.country}</td>
+              <td onClick={onChartOpen(item.country)}>
+                <button>{item.country}</button>
+              </td>
               <td>{formatCase(item.cases)}</td>
               <td>
                 <span>
