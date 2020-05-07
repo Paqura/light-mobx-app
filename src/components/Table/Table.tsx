@@ -4,8 +4,10 @@ import { observer } from 'mobx-react';
 import { Table as RTable, Modal, Spinner } from 'react-bootstrap';
 import { coronaService } from '../../services/Corona.service';
 import { Chart } from '../Chart';
+import TableRow from './TableRow';
 
-const formatCase = new Intl.NumberFormat().format;
+const getSortIcon = (direction: string) =>
+  direction === 'up' ? '^' : direction === 'down' ? '_' : '*';
 
 const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,7 +15,7 @@ const Table = () => {
   const [chartData, setChartData] = useState<number[]>([]);
   const { data, setSort, direction, setData } = useTableStore();
 
-  const sortIcon = direction === 'up' ? '^' : direction === 'down' ? '_' : '*';
+  const sortIcon = getSortIcon(direction);
 
   useEffect(() => {
     const getData = async () => {
@@ -52,10 +54,16 @@ const Table = () => {
 
   return (
     <>
-      <Modal onHide={closeModal} show={isModalShown} size="xl" animation={false}>
+      <Modal
+        size="xl"
+        onHide={closeModal}
+        show={isModalShown}
+        animation={false}
+      >
         <Chart data={chartData} />
       </Modal>
-      <RTable striped bordered hover>
+
+      <RTable striped bordered>
         <thead>
           <tr>
             <td>№</td>
@@ -67,20 +75,14 @@ const Table = () => {
             <td>Flag</td>
           </tr>
         </thead>
+
         <tbody>
           {data?.length > 0 && data.map((item, idx) => (
-            <tr key={item.country}>
-              <td>{idx}</td>
-              <td onClick={onChartOpen(item.country)}>
-                <button>{item.country}</button>
-              </td>
-              <td>{formatCase(item.cases)}</td>
-              <td>
-                <span>
-                  <img src={item.countryInfo.flag} alt={`Flag of ${item.country}`} width="32px" />
-                </span>
-              </td>
-            </tr>
+            <TableRow key={item.country}
+              idx={idx}
+              data={item}
+              onChartOpen={onChartOpen}
+            />
           ))}
         </tbody>
       </RTable>
