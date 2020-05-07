@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableRow should return snapshot 1`] = `
+<tr>
+  <td>
+    0
+  </td>
+  <td>
+    <button>
+      USA
+    </button>
+  </td>
+  <td>
+    20
+  </td>
+  <td>
+    1
+  </td>
+  <td>
+    <span>
+      <img
+        alt="Flag of USA"
+        src="path/to/flag"
+        width="32px"
+      />
+    </span>
+  </td>
+</tr>
+`;

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table should return snapshot 1`] = `
+<table
+  className="table table-striped table-bordered"
+>
+  <thead>
+    <tr>
+      <td>
+        №
+      </td>
+      <td>
+        Country
+      </td>
+      <td
+        onClick={[Function]}
+      >
+        Cases
+        <span
+          style={
+            Object {
+              "position": "absolute",
+            }
+          }
+        >
+          *
+        </span>
+      </td>
+      <td>
+        Deaths
+      </td>
+      <td>
+        Flag
+      </td>
+    </tr>
+  </thead>
+  <tbody />
+</table>
+`;
