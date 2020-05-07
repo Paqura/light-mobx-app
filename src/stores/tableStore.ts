@@ -13,13 +13,13 @@ export type SortDir = 'default' | 'up' | 'down';
 class TableStore {
   private cachedData = [];
 
-  @observable dir: SortDir = 'default';
+  @observable direction: SortDir = 'default';
   @observable data: Data = [];
 
   constructor() {
     reaction(
-      () => this.dir,
-      dir => this.updateData(dir)
+      () => this.direction,
+      direction => this.updateData(direction)
     )
   }
 
@@ -28,30 +28,30 @@ class TableStore {
     this.cachedData = data;
   }
 
-  @action updateData = (dir: SortDir) => {
-    if (dir === 'default') {
+  @action updateData = (direction: SortDir) => {
+    if (direction === 'default') {
       return this.data = this.cachedData;
     }
 
     this.data = this.data.sort(
-      (a, b) => dir === 'down'
+      (a, b) => direction === 'down'
         ? a.cases - b.cases
         : b.cases - a.cases
     )
   }
 
   @action setSort = () => {
-    switch(this.dir) {
+    switch(this.direction) {
       case 'up':
-        this.dir = 'default'; break;
+        this.direction = 'default'; break;
 
       case 'down':
-        this.dir = 'up'; break;
+        this.direction = 'up'; break;
 
       case 'default':
-        this.dir = 'down'; break;
+        this.direction = 'down'; break;
 
-      default: throw new Error('Unexpected dir');
+      default: throw new Error('Unexpected direction');
     }
   }
 }

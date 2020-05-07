@@ -11,9 +11,9 @@ const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
   const [chartData, setChartData] = useState<number[]>([]);
-  const { data, setSort, dir, setData } = useTableStore();
+  const { data, setSort, direction, setData } = useTableStore();
 
-  const sortIcon = dir === 'up' ? '^' : dir === 'down' ? '_' : '*';
+  const sortIcon = direction === 'up' ? '^' : direction === 'down' ? '_' : '*';
 
   useEffect(() => {
     const getData = async () => {
