@@ -12,7 +12,7 @@ const getSortIcon = (direction: string) =>
 const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
-  const [chartData, setChartData] = useState<number[]>([]);
+  const [chartData, setChartData] = useState<{ [key: string]: number }>({});
   const { data, setSort, direction, setData } = useTableStore();
 
   const sortIcon = getSortIcon(direction);
@@ -35,8 +35,10 @@ const Table = () => {
 
     try {
       const { timeline } = await coronaService.getChartData(preparedCountry);
-      const cases = Object.values(timeline.cases);
-      setChartData(cases);
+
+      setChartData(timeline.cases);
+
+      console.log('timeline', timeline);
 
       setIsModalShown(true);
     } catch (error) {
@@ -72,6 +74,7 @@ const Table = () => {
               Cases
               <span style={{ position: 'absolute' }}>{sortIcon}</span>
             </td>
+            <td>Deaths</td>
             <td>Flag</td>
           </tr>
         </thead>

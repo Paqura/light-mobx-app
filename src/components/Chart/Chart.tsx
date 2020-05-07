@@ -1,21 +1,28 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
+import { EChartOption } from 'echarts';
 
 interface IProps {
-  data: number[];
+  data: {
+    [key: string]: number;
+  }
 }
 
 const Chart: React.FC<IProps> = ({ data }) => {
-  const getOption = () => {
+  const getOption = (): EChartOption => {
     return {
-      xAxis: {
-          id: 'mainLine',
-      },
+      xAxis: [
+        {
+          data: Object.keys(data),
+        }
+      ],
+
       yAxis: {
         type: 'value',
       },
+
       series: [
-        { id: 'line', type: 'line', data },
+        { id: 'line', type: 'line', data: Object.values(data), xAxisIndex: 0 },
       ],
     }
   };

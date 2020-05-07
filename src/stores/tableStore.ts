@@ -1,12 +1,11 @@
 import { action, observable, reaction } from 'mobx';
 
-type Data = Array<{
-  cases: number;
+export interface TableItem {
   country: string;
-  countryInfo: {
-    flag: string;
-  }
-}>
+  cases: number;
+  countryInfo: { flag: string };
+  deaths: number;
+}
 
 export type SortDir = 'default' | 'up' | 'down';
 
@@ -14,7 +13,7 @@ class TableStore {
   private cachedData = [];
 
   @observable direction: SortDir = 'default';
-  @observable data: Data = [];
+  @observable data: TableItem[] = [];
 
   constructor() {
     reaction(
