@@ -3,7 +3,8 @@ type TimeLineItem = { [key: string]: number }
 interface TimeLine {
   cases: TimeLineItem;
   deaths: TimeLineItem;
-};
+}
+
 interface ChartDataResponse {
   country: string;
   timeline: TimeLine;
