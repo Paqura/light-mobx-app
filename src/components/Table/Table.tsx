@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent } from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
 import { Table as RTable, Modal, Spinner } from 'react-bootstrap';
@@ -30,15 +30,17 @@ const Table = () => {
     getData();
   }, [setData]);
 
-  const onChartOpen = (country: string) => async () => {
+  const onChartOpen = (country: string) => async (evt: MouseEvent) => {
     const preparedCountry = country.toLowerCase();
+
+    const dataId = (evt.target as HTMLElement).dataset.id as 'cases' | 'deaths' | undefined;
+
+    if (!dataId) return;
 
     try {
       const { timeline } = await coronaService.getChartData(preparedCountry);
 
-      setChartData(timeline.cases);
-
-      console.log('timeline', timeline);
+      setChartData(timeline[dataId]);
 
       setIsModalShown(true);
     } catch (error) {

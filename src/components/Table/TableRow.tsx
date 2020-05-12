@@ -11,13 +11,17 @@ interface Props {
 
 const TableRow: React.FC<Props> = ({ data, idx, onChartOpen }) => {
   return (
-    <tr>
+    <tr onClick={onChartOpen(data.country)}>
       <td>{idx}</td>
-      <td onClick={onChartOpen(data.country)}>
-        <button>{data.country}</button>
+      <td>
+        {data.country}
       </td>
-      <td>{formatCase(data.cases)}</td>
-      <td>{formatCase(data.deaths)}</td>
+      <td>
+        <button data-id="cases">{formatCase(data.cases)}</button>
+      </td>
+      <td>
+        <button data-id="deaths">{formatCase(data.deaths)}</button>
+      </td>
       <td>
         <span>
           <img src={data.countryInfo.flag} alt={`Flag of ${data.country}`} width="32px" />
