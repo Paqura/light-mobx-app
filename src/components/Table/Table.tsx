@@ -1,10 +1,11 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import { useTableStore } from '../../stores';
 import { observer } from 'mobx-react';
-import { Table as RTable, Modal, Spinner } from 'react-bootstrap';
-import { coronaService } from '../../services/Corona.service';
+import { Table as RTable, Spinner } from 'react-bootstrap';
+import { coronaService, TimeLine } from '../../services/Corona.service';
 import { Chart } from '../Chart';
 import TableRow from './TableRow';
+import { Modal } from '../Modal';
 
 const getSortIcon = (direction: string) =>
   direction === 'up' ? '^' : direction === 'down' ? '_' : '*';
@@ -12,7 +13,7 @@ const getSortIcon = (direction: string) =>
 const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
-  const [chartData, setChartData] = useState<{ [key: string]: number }>({});
+  const [chartData, setChartData] = useState<TimeLine | null>(null);
   const { data, setSort, direction, setData } = useTableStore();
 
   const sortIcon = getSortIcon(direction);
@@ -33,14 +34,10 @@ const Table = () => {
   const onChartOpen = (country: string) => async (evt: MouseEvent) => {
     const preparedCountry = country.toLowerCase();
 
-    const dataId = (evt.target as HTMLElement).dataset.id as 'cases' | 'deaths' | undefined;
-
-    if (!dataId) return;
-
     try {
       const { timeline } = await coronaService.getChartData(preparedCountry);
 
-      setChartData(timeline[dataId]);
+      setChartData(timeline);
 
       setIsModalShown(true);
     } catch (error) {
@@ -58,14 +55,11 @@ const Table = () => {
 
   return (
     <>
-      <Modal
-        size="xl"
-        onHide={closeModal}
-        show={isModalShown}
-        animation={false}
-      >
-        <Chart data={chartData} />
-      </Modal>
+      {isModalShown && (
+        <Modal onClose={closeModal}>
+          <Chart data={chartData} />
+        </Modal>
+      )}
 
       <RTable striped bordered>
         <thead>

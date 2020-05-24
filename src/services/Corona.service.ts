@@ -1,8 +1,9 @@
 type TimeLineItem = { [key: string]: number }
 
-interface TimeLine {
+export interface TimeLine {
   cases: TimeLineItem;
   deaths: TimeLineItem;
+  recovered: TimeLineItem;
 }
 
 interface ChartDataResponse {

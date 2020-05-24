@@ -16,11 +16,11 @@ const TableRow: React.FC<Props> = ({ data, idx, onChartOpen }) => {
       <td>
         {data.country}
       </td>
-      <td>
-        <button data-id="cases">{formatCase(data.cases)}</button>
+      <td className="table-cell-chart">
+        {formatCase(data.cases)}
       </td>
-      <td>
-        <button data-id="deaths">{formatCase(data.deaths)}</button>
+      <td className="table-cell-chart">
+        {formatCase(data.deaths)}
       </td>
       <td>
         <span>

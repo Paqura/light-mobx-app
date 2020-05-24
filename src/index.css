@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.table-cell-chart:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #007bff;
+}
+
+.table-cell-chart:active {
+  color: white;
+  background-color: #77b9ff;
+}
